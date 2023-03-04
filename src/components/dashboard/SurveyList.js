@@ -7,6 +7,7 @@ import sortImage from '../../images/sort.svg'
 import funnel from '../../images/funnel.png'
 import searchIcon from '../../images/search.png'
 import axios from 'axios'
+import backendLink from "../../server/backendLink"
 
 function SurveyList() {
 
@@ -25,7 +26,7 @@ function SurveyList() {
     let [surveyList, setSurveyList] = useState([])
     useEffect(() => {
         async function fetchSurveys() {
-            let response = await axios.get('https://survey-form-project-backend.onrender.com/allSurveys')
+            let response = await axios.get(`${backendLink}/allSurveys`)
             let surveyList = await response.data
             setSurveyList(surveyList)
         }
@@ -36,13 +37,13 @@ function SurveyList() {
     let [searchText, setSearchText] = useState('')
     async function startSearchText() {
         if (searchText !== '') {
-            let response = await axios.post(`https://survey-form-project-backend.onrender.com/search`, {
+            let response = await axios.post(`${backendLink}/search`, {
                 word: searchText
             })
             let searchResult = response.data
             setSurveyList(searchResult)
         } else {
-            let response = await axios.get(`https://survey-form-project-backend.onrender.com/allSurveys`)
+            let response = await axios.get(`${backendLink}/allSurveys`)
             let searchResult = response.data
             setSurveyList(searchResult)
         }
@@ -50,7 +51,7 @@ function SurveyList() {
     }
     // ================================= Sort surveys by name =================================
     async function sortSurvey() {
-        let response = await axios.get(`https://survey-form-project-backend.onrender.com/sort`)
+        let response = await axios.get(`${backendLink}/sort`)
         let searchResult = response.data
         setSurveyList(searchResult)
     }

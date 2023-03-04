@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import CreateQuestion from './CreateQuestion'
 import Sidebar from '../dashboard/SideBar'
+import backendLink from '../../server/backendLink'
 
 function QuestionTable1() {
 
@@ -17,7 +18,7 @@ function QuestionTable1() {
 
     useEffect(() => {
         async function getAllSurveys() {
-            let response = await axios('https://survey-form-project-backend.onrender.com/allSurveys')
+            let response = await axios(`${backendLink}/allSurveys`)
             let surveyList = response.data
             let lastSurvey = surveyList.at(-1)
             lastSurveyId.current = lastSurvey._id
@@ -41,7 +42,7 @@ function QuestionTable1() {
                 options: [...optionsList],
                 surveyId: lastSurveyId.current
             }])
-            await axios.post('https://survey-form-project-backend.onrender.com/addQuestion',
+            await axios.post(`${backendLink}/addQuestion`,
                 {
                     ...question,
                     options: [...optionsList],
@@ -88,7 +89,7 @@ function QuestionTable1() {
         let temp = [...questionList]
         temp[index].isMCQ = str
         setQuestionList([...temp])
-        axios.post('https://survey-form-project-backend.onrender.com/mcq', { isMCQ: str })
+        axios.post(`${backendLink}/mcq`, { isMCQ: str })
     }
 
     return <div className="question-table">

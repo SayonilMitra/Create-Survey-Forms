@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import "./login.css"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import backendLink from "../../server/backendLink"
 
 const Login = () => {
 
@@ -21,7 +22,7 @@ const Login = () => {
     }
 
     const login = () => {
-        axios.post("https://survey-form-project-backend.onrender.com/login", user)
+        axios.post(`${backendLink}/login`, user)
             .then(res => {
                 if (res.data === "ok") {
                     localStorage.setItem("isLoggedIn", true)

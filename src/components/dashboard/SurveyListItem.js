@@ -4,6 +4,7 @@ import trash_can from "../../images/trash_can.png"
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import backendLink from '../../server/backendLink'
 
 function SurveyListItem({ listItem }) {
 
@@ -13,7 +14,7 @@ function SurveyListItem({ listItem }) {
     let [displayState, setDisplay] = useState('flex')
 
     async function deleteSurvey() {
-        await axios.delete(`https://survey-form-project-backend.onrender.com/delete/${listItem._id}`)
+        await axios.delete(`${backendLink}/delete/${listItem._id}`)
         setDisplay('none')
     }
 
@@ -26,7 +27,7 @@ function SurveyListItem({ listItem }) {
     // toggle view of survey questions
     async function viewSurvey() {
         setViewQuestions(prev => !prev)
-        let response = await axios.get(`https://survey-form-project-backend.onrender.com/questionList/${listItem._id}`)
+        let response = await axios.get(`${backendLink}/questionList/${listItem._id}`)
         let questionList = response.data
         setQuestionList(questionList)
 

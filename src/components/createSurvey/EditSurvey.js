@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'
 import axios from "axios";
 import SideBar from "../dashboard/SideBar";
+import backendLink from "../../server/backendLink";
 
 const EditSurvey = () => {
     const navigate = useNavigate()
@@ -39,7 +40,7 @@ const EditSurvey = () => {
     useEffect(() => {
         let surveyId = localStorage.getItem('surveyId')
         localStorage.removeItem('surveyId')
-        axios.get(`https://survey-form-project-backend.onrender.com/getSurvey/${surveyId}`)
+        axios.get(`${backendLink}/${surveyId}`)
             .then(res => {
                 setNewSurvey({
                     surveyId: res.data._id,
@@ -91,7 +92,7 @@ const EditSurvey = () => {
     // ======================= Send edits to data base =======================
     async function confirmEditSurvey() {
         if (newSurvey.surveyId !== '') {
-            await axios.post('https://survey-form-project-backend.onrender.com/editSurvey', newSurvey)
+            await axios.post(`${backendLink}/editSurvey`, newSurvey)
             navigate('/dashboard')
         } else {
             alert("Sorry! some error happened, go back and try again.")
