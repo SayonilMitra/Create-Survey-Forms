@@ -40,7 +40,7 @@ const EditSurvey = () => {
     useEffect(() => {
         let surveyId = localStorage.getItem('surveyId')
         localStorage.removeItem('surveyId')
-        axios.get(`${backendLink}/${surveyId}`)
+        axios.get(`${backendLink}/getSurvey/${surveyId}`)
             .then(res => {
                 setNewSurvey({
                     surveyId: res.data._id,

@@ -21,6 +21,7 @@ function SurveyListItem({ listItem }) {
     // send to edit survey page
     function editSurvey(questionItem) {
         localStorage.setItem('surveyId', `${questionItem._id}`)
+        console.log(questionItem._id)
         navigate('/editSurvey')
     }
 

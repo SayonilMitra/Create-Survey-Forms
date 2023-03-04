@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'
 import axios from "axios";
 import SideBar from "../dashboard/SideBar";
-
+import backendLink from "../../server/backendLink";
 
 const CreateSurvey = () => {
     const navigate = useNavigate()
@@ -69,7 +69,7 @@ const CreateSurvey = () => {
             || newSurvey.image === '') {
             alert('All fields are mandatory')
         } else {
-            axios.post('https://survey-form-project-backend.onrender.com/newSurvey', newSurvey)
+            axios.post(`${backendLink}/newSurvey`, newSurvey)
                 .then(() => {
                     navigate('/createQuestions')
                 })
