@@ -22,9 +22,10 @@ app.get('/test', cors(), (req, res) => {
 
 
 // connect database
-/* const mongo_db_url = 'mongodb://localhost:27017/survey' */
-const mongo_db_url = 'mongodb+srv://praful:praful@cluster0.6xsocrs.mongodb.net/?retryWrites=true&w=majority'
-mongoose.connect(mongo_db_url, () => {
+const dotenv = require('dotenv')
+dotenv.config()
+const dbLink = process.env.mongo_url
+mongoose.connect(dbLink, () => {
     console.log('Connected to database')
 })
 
