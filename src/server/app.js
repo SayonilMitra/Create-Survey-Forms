@@ -22,6 +22,7 @@ app.get('/test', cors(), (req, res) => {
 
 
 // connect database
+
 const dotenv = require('dotenv')
 dotenv.config()
 const dbLink = process.env.mongo_url

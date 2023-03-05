@@ -7,24 +7,12 @@ import backendLink from '../../server/backendLink'
 
 function QuestionTable1() {
 
-    let lastSurveyId = useRef('')
-
     let [question, setQuestion] = useState({
         questionName: '',
         options: [],
         isMCQ: 'No',
         surveyId: ''
     })
-
-    useEffect(() => {
-        async function getAllSurveys() {
-            let response = await axios(`${backendLink}/allSurveys`)
-            let surveyList = response.data
-            let lastSurvey = surveyList.at(-1)
-            lastSurveyId.current = lastSurvey._id
-        }
-        getAllSurveys()
-    }, [])
 
     let [preview, setPreview] = useState(false)
     let [questionList, setQuestionList] = useState([])
@@ -36,17 +24,24 @@ function QuestionTable1() {
         if (question.questionName === '' || optionsList.length === 0) {
             alert('Question and options can not be empty')
         } else {
+            let userId = localStorage.getItem('userId')
+            let response = await axios(`${backendLink}/allSurveys/${userId}`)
+            let surveyList = response.data
+            let lastSurvey = surveyList.at(-1)
+            let lastSurveyId = lastSurvey._id
+
             setQuestionList([...questionList,
             {
                 ...question,
                 options: [...optionsList],
-                surveyId: lastSurveyId.current
+                surveyId: lastSurveyId
             }])
+
             await axios.post(`${backendLink}/addQuestion`,
                 {
                     ...question,
                     options: [...optionsList],
-                    surveyId: lastSurveyId.current
+                    surveyId: lastSurveyId
                 })
             setOptionsList([])
             setQuestion({ ...question, questionName: '' })
