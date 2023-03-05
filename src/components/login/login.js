@@ -24,8 +24,9 @@ const Login = () => {
     const login = () => {
         axios.post(`${backendLink}/login`, user)
             .then(res => {
-                if (res.data === "ok") {
+                if (res.data.user_data === "ok") {
                     localStorage.setItem("isLoggedIn", true)
+                    localStorage.setItem("userId", res.data.userId)
                     navigate('/dashboard')
                 } else {
                     alert("Wrong credentials")

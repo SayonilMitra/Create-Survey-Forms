@@ -29,7 +29,10 @@ loginRouter.post('/login', cors(), (req, res) => {
         if (userData === null) {
             res.end('Incorrect email or password')
         } else {
-            res.end('ok')
+            res.end(JSON.stringify({
+                'user_data': 'ok',
+                'userId': userData['_id']
+            }))
         }
 
     }
@@ -74,7 +77,7 @@ loginRouter.post('/register', cors(), (req, res) => {
             password: token
         })
         await newUser.save()
-        res.end('ok')
+        res.end()
     }
 })
 

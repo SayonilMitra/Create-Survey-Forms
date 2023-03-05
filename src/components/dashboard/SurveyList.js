@@ -25,8 +25,9 @@ function SurveyList() {
     // ================================= Fetch surveys from database =================================
     let [surveyList, setSurveyList] = useState([])
     useEffect(() => {
+        let userId = localStorage.getItem('userId')
         async function fetchSurveys() {
-            let response = await axios.get(`${backendLink}/allSurveys`)
+            let response = await axios.get(`${backendLink}/allSurveys/${userId}`)
             let surveyList = await response.data
             setSurveyList(surveyList)
         }

@@ -7,16 +7,17 @@ const cors = require('cors')
 surveyRouter.use(express.json({ limit: '100mb' }))
 surveyRouter.use(cors())
 
-surveyRouter.get('/allSurveys', (req, res) => {
-    // fins all surveys with the same user id
+// ============== find all surveys with the same user id ==============
+surveyRouter.get('/allSurveys/:userId', (req, res) => {
     async function findSurveyByUser() {
-        let surveyList = await surveyModel.find()
+        let surveyList = await surveyModel.find({ userId: req.params.userId })
         res.end(JSON.stringify(surveyList))
     }
 
     findSurveyByUser()
 })
 
+// ============== Edit one survey ==============
 surveyRouter.post('/editSurvey', cors(), (req, res) => {
     let { surveyId, ...editedSurvey } = req.body
     async function EditSurveyById() {
@@ -35,7 +36,7 @@ surveyRouter.post('/editSurvey', cors(), (req, res) => {
     EditSurveyById()
 })
 
-// get all question in survey list
+// ============== Get all questions in one survey ==============
 surveyRouter.get('/questionList/:surveyId', cors(), (req, res) => {
     let surveyId = req.params.surveyId
     async function getQuestions() {

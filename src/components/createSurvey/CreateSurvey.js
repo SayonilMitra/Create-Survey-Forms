@@ -24,6 +24,7 @@ const CreateSurvey = () => {
     }
 
     // ======================= Taking user input =======================
+    let userId = localStorage.getItem("userId")
     let [newSurvey, setNewSurvey] = useState({
         surveyName: "",
         description: "",
@@ -31,7 +32,8 @@ const CreateSurvey = () => {
         startDate: "",
         endDate: "",
         otherCriteria: "",
-        image: ""
+        image: "",
+        userId: userId
     })
     function ChangeSurveyName(e) {
         let value = e.target.value
@@ -57,12 +59,8 @@ const CreateSurvey = () => {
         let value = e.target.value
         setNewSurvey({ ...newSurvey, otherCriteria: value })
     }
-    function ChangeImage(e) {
-        /* let value = e.target.value
-        setNewSurvey({ ...newSurvey, image: value }) */
-    }
 
-    // ======================= Send survey todatabase =======================
+    // ======================= Send survey to database =======================
     function addSurvey() {
         if (newSurvey.surveyName === '' || newSurvey.description === '' || newSurvey.type === ''
             || newSurvey.startDate === '' || newSurvey.endDate === '' || newSurvey.otherCriteria === ''
