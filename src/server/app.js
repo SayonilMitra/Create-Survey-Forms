@@ -25,6 +25,7 @@ app.get('/test', cors(), (req, res) => {
 const dotenv = require('dotenv')
 dotenv.config()
 const dbLink = process.env.mongo_url
+
 mongoose.connect(dbLink, () => {
     console.log('Connected to database')
 })

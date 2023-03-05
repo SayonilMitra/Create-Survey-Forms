@@ -28,10 +28,16 @@ const Register = () => {
     const register = () => {
         const { username, email, phone, profession, password, reEnterPassword } = user
 
-        if (username && email && password && (password === reEnterPassword) && phone.length === 10) {
+        if (username && email && password &&
+            (password === reEnterPassword) && phone.length === 10) {
+
             axios.post(`${backendLink}/register`, user)
                 .then(res => {
-                    navigate("/login")
+                    if (res.data === 'ok') {
+                        navigate("/login")
+                    } else {
+                        alert(`${res.data}`)
+                    }
                 })
         } else {
             alert("invalid input")

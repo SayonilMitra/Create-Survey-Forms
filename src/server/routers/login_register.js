@@ -40,6 +40,7 @@ loginRouter.post('/register', cors(), (req, res) => {
     let { username, email, phone, profession, password } = req.body
 
     // validation of user input
+    let emailCharacters = email.split('')
     if (username === '' || email === '' || password === '' || phone === ''
         || profession === '' || password === '') {
         res.end('All fields are mandatory')
@@ -47,6 +48,8 @@ loginRouter.post('/register', cors(), (req, res) => {
         res.end("Password must have minimum 8 characters")
     } else if (phone.length !== 10) {
         res.end("Phone number must have 10 digits")
+    } else if (!emailCharacters.includes('@') || !emailCharacters.includes('.')) {
+        res.end("Invalid Email")
     } else {
         addUser()
     }
@@ -62,7 +65,7 @@ loginRouter.post('/register', cors(), (req, res) => {
             password: token
         })
         await newUser.save()
-        res.end('Registration successful')
+        res.end('ok')
     }
 })
 
