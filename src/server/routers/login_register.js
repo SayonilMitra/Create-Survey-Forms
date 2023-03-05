@@ -51,7 +51,16 @@ loginRouter.post('/register', cors(), (req, res) => {
     } else if (!emailCharacters.includes('@') || !emailCharacters.includes('.')) {
         res.end("Invalid Email")
     } else {
-        addUser()
+        // check if email already exists
+        async function checkEmailExists() {
+            let result = await userModel.findOne({ email: email })
+            if (result === null) {
+                addUser()
+            } else {
+                res.end('email already exists')
+            }
+        }
+        checkEmailExists()
     }
 
     // add user data to database
