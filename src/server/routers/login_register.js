@@ -77,7 +77,7 @@ loginRouter.post('/register', cors(), (req, res) => {
             password: token
         })
         await newUser.save()
-        res.end()
+        res.end('ok')
     }
 })
 
