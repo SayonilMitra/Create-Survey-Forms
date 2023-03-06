@@ -37,14 +37,15 @@ function SurveyList() {
     // ================================= Search survey name =================================
     let [searchText, setSearchText] = useState('')
     async function startSearchText() {
+        let userId = localStorage.getItem('userId')
         if (searchText !== '') {
-            let response = await axios.post(`${backendLink}/search`, {
+            let response = await axios.post(`${backendLink}/search/${userId}`, {
                 word: searchText
             })
             let searchResult = response.data
             setSurveyList(searchResult)
         } else {
-            let response = await axios.get(`${backendLink}/allSurveys`)
+            let response = await axios.get(`${backendLink}/allSurveys/${userId}`)
             let searchResult = response.data
             setSurveyList(searchResult)
         }
@@ -52,7 +53,7 @@ function SurveyList() {
     }
     // ================================= Sort surveys by name =================================
     async function sortSurvey() {
-        let response = await axios.get(`${backendLink}/sort`)
+        let response = await axios.get(`${backendLink}/sort/${userId}`)
         let searchResult = response.data
         setSurveyList(searchResult)
     }

@@ -58,21 +58,21 @@ surveyRouter.post('/newSurvey', cors(), (req, res) => {
     createSurvey()
 })
 
-surveyRouter.get('/sort', cors(), (req, res) => {
+surveyRouter.get('/sort/:userId', cors(), (req, res) => {
     // fins all surveys with the same user id in sorted order
     async function findSurveyByUserSorted() {
-        let surveyList = await surveyModel.find().sort('surveyName')
+        let surveyList = await surveyModel.find({ userId: req.params.userId }).sort('surveyName')
         res.end(JSON.stringify(surveyList))
     }
     findSurveyByUserSorted()
 })
 
 // search survey by word in name
-surveyRouter.post('/search', cors(), (req, res) => {
+surveyRouter.post('/search/:userId', cors(), (req, res) => {
     let { word } = req.body
     // find all surveys where survey name container the given word
     async function findSurveyByWord() {
-        let surveyList = await surveyModel.find({ surveyName: word })
+        let surveyList = await surveyModel.find({ surveyName: word, userId: req.params.userId })
         res.end(JSON.stringify(surveyList))
     }
 
