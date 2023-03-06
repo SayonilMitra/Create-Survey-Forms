@@ -53,6 +53,7 @@ function SurveyList() {
     }
     // ================================= Sort surveys by name =================================
     async function sortSurvey() {
+        let userId = localStorage.getItem('userId')
         let response = await axios.get(`${backendLink}/sort/${userId}`)
         let searchResult = response.data
         setSurveyList(searchResult)
