@@ -27,6 +27,7 @@ const dotenv = require('dotenv')
 dotenv.config()
 const dbLink = process.env.mongo_url
 
+//const dbLink = ''
 
 mongoose.connect(dbLink, () => {
     console.log('Connected to database')

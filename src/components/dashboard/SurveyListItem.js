@@ -67,7 +67,10 @@ function SurveyListItem({ listItem }) {
                         <div className='survey-questions-right'>
                             {question_item.options.map((options_item) => {
                                 return <>
-                                    &nbsp;<input type='radio' name={question_item.questionName} />{options_item}
+                                    &nbsp;<input
+                                        type={question_item.isMCQ === 'No' ? 'radio' : 'checkbox'}
+                                        name={question_item.questionName} />
+                                    {options_item}
                                 </>
                             })}
                         </div>

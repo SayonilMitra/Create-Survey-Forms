@@ -11,7 +11,8 @@ function QuestionTable1() {
         questionName: '',
         options: [],
         isMCQ: 'No',
-        surveyId: ''
+        surveyId: '',
+        isMCQ: 'No'
     })
 
     let [preview, setPreview] = useState(false)
@@ -81,10 +82,12 @@ function QuestionTable1() {
 
     // ========================== change mcq status ==========================
     function changeMCQStatus(index, str) {
-        let temp = [...questionList]
-        temp[index].isMCQ = str
-        setQuestionList([...temp])
-        axios.post(`${backendLink}/mcq`, { isMCQ: str })
+        let mcqStatus = question.isMCQ
+        if (mcqStatus === 'Yes') {
+            setQuestion({ ...question, isMCQ: 'No' })
+        } else {
+            setQuestion({ ...question, isMCQ: 'Yes' })
+        }
     }
 
     return <div className="question-table">
@@ -105,10 +108,13 @@ function QuestionTable1() {
                                 name={index} /> {options_item} <br /></>
                         })}
                     </div>
-                    <div className='question-item-msq-option'>
+                    {/* <div className='question-item-msq-option'>
                         Enable Multiple Choice? {questionItem.isMCQ}<br />
                         <button id='mcq-yes' onClick={() => changeMCQStatus(index, 'Yes')}>Yes</button>
                         <button id='mcq-no' onClick={() => changeMCQStatus(index, 'No')}>NO</button> <br />
+                    </div> */}
+                    <div className='question-item-msq-option'>
+                        Multiple Choice? <br />{questionItem.isMCQ}
                     </div>
                 </li>
             })}
@@ -123,12 +129,12 @@ function QuestionTable1() {
                 </div>
 
                 {/* ========================== Add new Option to current question ========================== */}
-                <div>
+                <div className='new-question-item-row'>
                     <ul>
                         {optionsList.map((item, index) => {
-                            return <li key={index} className='new-question-item-row'>
-                                <span>{item} &nbsp;</span>
-                                <button className='remove-Option' onClick={() => removeOption(index)}>-</button>
+                            return <li key={index} className='new-question-option-row'>
+                                <div>{item} &nbsp;</div>
+                                <button className='remove-Option' onClick={() => removeOption(index)}>x</button>
                             </li>
                         })}
                     </ul>
@@ -138,8 +144,12 @@ function QuestionTable1() {
                     <input type='text' id='new-question-option-input' value={optionsText} placeholder='Type your option' onChange={e => changeOption(e)} /> &nbsp;
                     <button className='add-Option' onClick={AddOption}>+</button>
                 </div>
+
                 <div className='new-question-item-row'>
                     <button className='add-Question' onClick={addQuestion}>Add Question</button>
+                    <div id='mcq-checkbox'>
+                        <input type='checkbox' onChange={changeMCQStatus} /> Multiple Choice
+                    </div>
                 </div>
 
 
