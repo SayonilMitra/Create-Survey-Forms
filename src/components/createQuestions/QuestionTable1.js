@@ -2,7 +2,6 @@ import './QuestionTable1.css'
 import { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import CreateQuestion from './CreateQuestion'
-import Sidebar from '../dashboard/SideBar'
 import backendLink from '../../server/backendLink'
 
 function QuestionTable1() {
@@ -15,7 +14,6 @@ function QuestionTable1() {
         isMCQ: 'No'
     })
 
-    let [preview, setPreview] = useState(false)
     let [questionList, setQuestionList] = useState([])
     let [optionsText, setOptionText] = useState('')
     let [optionsList, setOptionsList] = useState([])
@@ -91,8 +89,7 @@ function QuestionTable1() {
     }
 
     return <div className="question-table">
-        <Sidebar />
-        <CreateQuestion preview={preview} setPreview={setPreview} />
+        <CreateQuestion />
         <ul>
             {/* ========================== display question list ========================== */}
             {questionList.map((questionItem, index) => {
@@ -108,11 +105,6 @@ function QuestionTable1() {
                                 name={index} /> {options_item} <br /></>
                         })}
                     </div>
-                    {/* <div className='question-item-msq-option'>
-                        Enable Multiple Choice? {questionItem.isMCQ}<br />
-                        <button id='mcq-yes' onClick={() => changeMCQStatus(index, 'Yes')}>Yes</button>
-                        <button id='mcq-no' onClick={() => changeMCQStatus(index, 'No')}>NO</button> <br />
-                    </div> */}
                     <div className='question-item-msq-option'>
                         Multiple Choice? <br />{questionItem.isMCQ}
                     </div>
@@ -120,7 +112,7 @@ function QuestionTable1() {
             })}
             {/* ========================== Add New question ========================== */}
 
-            {!preview ? <li className='new-question-item'>
+            <li className='new-question-item'>
                 <div className='new-question-item-row'>
                     Question
                 </div>
@@ -153,7 +145,7 @@ function QuestionTable1() {
                 </div>
 
 
-            </li> : <></>}
+            </li>
 
         </ul>
 

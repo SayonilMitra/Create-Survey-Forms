@@ -3,14 +3,13 @@ import './CreateSurvey.css'
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'
 import axios from "axios";
-import SideBar from "../dashboard/SideBar";
 import backendLink from "../../server/backendLink";
 
 const EditSurvey = () => {
     const navigate = useNavigate()
     // ================================= Check if user is logged in =================================
     useEffect(() => {
-        let loginStatus = localStorage.getItem("isLoggedIn")
+        let loginStatus = localStorage.getItem("userId")
         if (loginStatus === null) {
             // user not logged in, redirect to login page
             navigate('/login')
@@ -20,7 +19,7 @@ const EditSurvey = () => {
 
     function logout() {
         navigate('/login')
-        localStorage.removeItem("isLoggedIn")
+        localStorage.removeItem("userId")
     }
 
     // ======================= Taking user input =======================
@@ -31,8 +30,7 @@ const EditSurvey = () => {
         type: "",
         startDate: "",
         endDate: "",
-        otherCriteria: "",
-        image: ""
+        otherCriteria: ""
     })
     // get survey id from local storage
     // then fetch survey data from data base
@@ -50,7 +48,6 @@ const EditSurvey = () => {
                     startDate: res.data.startDate,
                     endDate: res.data.endDate,
                     otherCriteria: res.data.otherCriteria,
-                    image: res.data.image
                 })
             })
     })
@@ -79,16 +76,6 @@ const EditSurvey = () => {
         setNewSurvey({ ...newSurvey, otherCriteria: value })
     }
 
-    // ======================= Change image to string =======================
-    function convertImage(event) {
-        let file = event.target.files[0]
-        let reader = new FileReader()
-        reader.onloadend = function () {
-            setNewSurvey({ ...newSurvey, image: reader.result })
-        }
-        reader.readAsDataURL(file)
-    }
-
     // ======================= Send edits to data base =======================
     async function confirmEditSurvey() {
         if (newSurvey.surveyId !== '') {
@@ -104,12 +91,9 @@ const EditSurvey = () => {
         <div>
             {/* ================ Nav Bar at the top ================ */}
             <nav className='create-survey-navbar'>
-                <div className='logo'>LOGO</div>
+                <div className='logo'>DashBoard</div>
                 <div className="log-out" onClick={logout}>Log Out</div>
             </nav>
-
-            {/* ================ Side bar ================ */}
-            <SideBar />
 
             {/* ================ Header ================ */}
             <header className="createhead">
@@ -161,14 +145,6 @@ const EditSurvey = () => {
                         <h2>Other Criteria</h2>
                         <input id="critin" type="text" placeholder="" value={newSurvey.otherCriteria}
                             onChange={(e) => ChangeOtherCriteria(e)} />
-                    </div>
-                    <div>
-                        <h2>Upload Image</h2>
-                        <label id="uploadlabel" htmlFor="upload" onChange={(e) => convertImage(e)}>
-                            Drag and drop to Upload <br />
-                            <input type="file" id="upload" />
-                        </label>
-                        {newSurvey.image !== '' ? <img src={newSurvey.image} className='upload-image' /> : <></>}
                     </div>
                 </div>
             </main>

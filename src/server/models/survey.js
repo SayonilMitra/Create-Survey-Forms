@@ -7,7 +7,6 @@ let surveySchema = mongoose.Schema({
     "startDate": String,
     "endDate": String,
     "otherCriteria": String,
-    "image": String,
     "userId": String
 })
 

@@ -7,6 +7,7 @@ import backendLink from "../../server/backendLink"
 const Register = () => {
 
     const navigate = useNavigate()
+    let [buttonText, setButtonText] = useState('Create Account')
 
     const [user, setUser] = useState({
         username: "",
@@ -25,12 +26,11 @@ const Register = () => {
         })
     }
 
-    const register = () => {
+    function register() {
         const { username, email, phone, profession, password, reEnterPassword } = user
 
-        if (username && email && password &&
-            (password === reEnterPassword) && phone.length === 10) {
-
+        if (username && email && profession && password && password === reEnterPassword && phone.length === 10) {
+            setButtonText('Please wait...')
             axios.post(`${backendLink}/register`, user)
                 .then(res => {
                     if (res.data === 'ok') {
@@ -59,7 +59,7 @@ const Register = () => {
             <input type="text" name="profession" value={user.profession} placeholder="Your Profession" onChange={handleChange}></input>
             <input type="text" name="password" value={user.password} placeholder="Your Password" onChange={handleChange}></input>
             <input type="text" name="reEnterPassword" value={user.reEnterPassword} placeholder="Re-enter Password" onChange={handleChange}></input>
-            <div className="button" onClick={register} >Register</div>
+            <div className="button" onClick={register} >{buttonText}</div>
             <div>or</div>
             <div className="button" onClick={() => navigate("/login")}>Login</div>
         </div>

@@ -27,7 +27,7 @@ const dotenv = require('dotenv')
 dotenv.config()
 const dbLink = process.env.mongo_url
 
-//const dbLink = ''
+//const dbLink = 'mongodb://localhost:27017/surveyForm'
 
 mongoose.connect(dbLink, () => {
     console.log('Connected to database')

@@ -7,7 +7,7 @@ function FullCreateQuestionPage() {
     // ================================= Check if user is logged in =================================
     let navigate = useNavigate()
     useEffect(() => {
-        let loginStatus = localStorage.getItem("isLoggedIn")
+        let loginStatus = localStorage.getItem("userId")
         if (loginStatus === null) {
             // user not logged in, redirect to login page
             navigate('/login')

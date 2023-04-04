@@ -44,16 +44,19 @@
   background-color: #278df1;
   border: 2px solid #278df1;
   color: white;
+  cursor: pointer;
 }
 #survey-list-sort {
   background-color: rgb(255, 255, 255);
   color: #278df1;
   border: 2px solid #278df1;
+  cursor: pointer;
 }
 #survey-list-search {
   background-color: rgb(255, 255, 255);
   color: #278df1;
   border: 2px solid #278df1;
+  cursor: pointer;
 }
 /* ======================== Info-bar ======================== */
 .info-surveyList {

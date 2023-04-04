@@ -7,6 +7,7 @@ import backendLink from "../../server/backendLink"
 const Login = () => {
 
     const navigate = useNavigate()
+    let [buttonText, setButtonText] = useState('Log in')
 
     const [user, setUser] = useState({
         email: "",
@@ -21,11 +22,11 @@ const Login = () => {
         })
     }
 
-    const login = () => {
+    function login() {
+        setButtonText('Please wait...')
         axios.post(`${backendLink}/login`, user)
             .then(res => {
                 if (res.data.user_data === "ok") {
-                    localStorage.setItem("isLoggedIn", true)
                     localStorage.setItem("userId", res.data.userId)
                     navigate('/dashboard')
                 } else {
@@ -47,7 +48,7 @@ const Login = () => {
                 <h1>Login</h1>
                 <input type="text" name="email" value={user.email} onChange={handleChange} placeholder="Enter your Email"></input>
                 <input type="text" name="password" value={user.password} onChange={handleChange} placeholder="Enter your Password" ></input>
-                <div className="button" onClick={login}>Login</div>
+                <div className="button" onClick={login}>{buttonText}</div>
                 <div>or</div>
                 <div className="button" onClick={() => navigate("/register")}>Register</div>
             </div>

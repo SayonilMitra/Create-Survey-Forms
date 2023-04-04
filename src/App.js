@@ -10,7 +10,7 @@ import EditSurvey from './components/createSurvey/EditSurvey';
 function App() {
 
   // check if user is looged in
-  let loginStatus = localStorage.getItem("isLoggedIn")
+  let loginStatus = localStorage.getItem("userId")
 
   return (<div className="App">
     <BrowserRouter>

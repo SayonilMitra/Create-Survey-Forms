@@ -1,21 +1,20 @@
 import './SurveyListItem.css'
-import pencil from "../../images/edit_pencil.png"
 import trash_can from "../../images/trash_can.png"
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import backendLink from '../../server/backendLink'
 
-function SurveyListItem({ listItem }) {
+function SurveyListItem({ listItem, searchText }) {
 
     const navigate = useNavigate()
     let [viewQuestions, setViewQuestions] = useState(false)
     let [questionList, setQuestionList] = useState([])
-    let [displayState, setDisplay] = useState('flex')
+    let [displayState, setDisplay] = useState(true)
 
     async function deleteSurvey() {
         await axios.delete(`${backendLink}/delete/${listItem._id}`)
-        setDisplay('none')
+        setDisplay(false)
     }
 
     // send to edit survey page
@@ -35,50 +34,56 @@ function SurveyListItem({ listItem }) {
     }
 
     return <>
-        <div className="survey-list-item" style={{ display: displayState }}>
-            <div>{listItem.surveyName}
-                &nbsp; &nbsp;
-                <img src={listItem.image} width='30' />
-            </div>
-            <div>{listItem.description}</div >
-            <div>{listItem.type}</div >
-            <div>{listItem["startDate"]}</div >
-            <div>{listItem["endDate"]}</div >
-            <div className='icon actions'>
-                <button id='survey-list-item-edit' onClick={() => editSurvey(listItem)}>
-                    Edit
-                </button>
-                <button id='survey-list-item-view' onClick={viewSurvey}>
-                    {viewQuestions ? 'Close' : 'View'}
-                </button>
-                <a href='#'>
-                    <img src={trash_can} onClick={deleteSurvey} />
-                </a>
-            </div >
-        </div>
+        {(displayState && `${listItem.surveyName}`.includes(searchText)) &&
+            <>
+                {/*Question and other details*/}
+                <div className="survey-list-item">
+                    <div>{listItem.surveyName}
+                        &nbsp; &nbsp;
+                        <img src={listItem.image} width='30' />
+                    </div>
+                    <div>{listItem.description}</div >
+                    <div>{listItem.type}</div >
+                    <div>{listItem["startDate"]}</div >
+                    <div>{listItem["endDate"]}</div >
+                    <div className='icon actions'>
+                        <button id='survey-list-item-edit' onClick={() => editSurvey(listItem)}>
+                            Edit
+                        </button>
+                        <button id='survey-list-item-view' onClick={viewSurvey}>
+                            {viewQuestions ? 'Close' : 'View'}
+                        </button>
+                        <a href='#'>
+                            <img src={trash_can} onClick={deleteSurvey} />
+                        </a>
+                    </div >
+                </div>
+                {/*Options of question above*/}
+                {viewQuestions &&
+                    <div className='survey-questions'>
+                        <ul>
+                            {questionList.map((question_item, index) => {
+                                return <li key={index} className='survey-questions-row'>
+                                    <div className='survey-questions-left'>
+                                        Question: {question_item.questionName}
+                                    </div>
+                                    <div className='survey-questions-right'>
+                                        {question_item.options.map((options_item) => {
+                                            return <>
+                                                &nbsp;<input
+                                                    type={question_item.isMCQ === 'No' ? 'radio' : 'checkbox'}
+                                                    name={question_item.questionName} />
+                                                {options_item}
+                                            </>
+                                        })}
+                                    </div>
 
-        {viewQuestions ? <div className='survey-questions'>
-            <ul>
-                {questionList.map((question_item, index) => {
-                    return <li key={index} className='survey-questions-row'>
-                        <div className='survey-questions-left'>
-                            Question: {question_item.questionName}
-                        </div>
-                        <div className='survey-questions-right'>
-                            {question_item.options.map((options_item) => {
-                                return <>
-                                    &nbsp;<input
-                                        type={question_item.isMCQ === 'No' ? 'radio' : 'checkbox'}
-                                        name={question_item.questionName} />
-                                    {options_item}
-                                </>
+                                </li>
                             })}
-                        </div>
-
-                    </li>
-                })}
-            </ul>
-        </div> : <></>}
+                        </ul>
+                    </div>}
+            </>
+        }
     </>
 }
 

@@ -1,10 +1,7 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import SurveyListItem from "./SurveyListItem"
-import SideBar from "./SideBar"
 import './SurveyList.css'
-import sortImage from '../../images/sort.svg'
-import funnel from '../../images/funnel.png'
 import searchIcon from '../../images/search.png'
 import axios from 'axios'
 import backendLink from "../../server/backendLink"
@@ -15,7 +12,7 @@ function SurveyList() {
 
     // ================================= Check if user is logged in =================================
     useEffect(() => {
-        let loginStatus = localStorage.getItem("isLoggedIn")
+        let loginStatus = localStorage.getItem("userId")
         if (loginStatus === null) {
             // user not logged in, redirect to login page
             navigate('/')
@@ -36,21 +33,7 @@ function SurveyList() {
 
     // ================================= Search survey name =================================
     let [searchText, setSearchText] = useState('')
-    async function startSearchText() {
-        let userId = localStorage.getItem('userId')
-        if (searchText !== '') {
-            let response = await axios.post(`${backendLink}/search/${userId}`, {
-                word: searchText
-            })
-            let searchResult = response.data
-            setSurveyList(searchResult)
-        } else {
-            let response = await axios.get(`${backendLink}/allSurveys/${userId}`)
-            let searchResult = response.data
-            setSurveyList(searchResult)
-        }
 
-    }
     // ================================= Sort surveys by name =================================
     async function sortSurvey() {
         let userId = localStorage.getItem('userId')
@@ -67,26 +50,24 @@ function SurveyList() {
     // ================================= Log Out user =================================
     function logOut() {
         navigate('/login')
-        localStorage.removeItem("isLoggedIn")
+        localStorage.removeItem("userId")
     }
 
     return <div className="container">
         <div className="survey-list-container">
             <div className="nav-bar">
-                <div className="logo">LOGO</div>
+                <div className="logo">DashBoard</div>
                 <div className="log-out" onClick={logOut}>Log Out</div>
             </div>
-            <SideBar />
             <div className="header">
                 Survey list
                 <span className="icon" >
                     <img src={searchIcon} />
                 </span >
                 <input type='text' id='survey-list-search-input' onChange={(e) => setSearchText(e.target.value)} />
-                <button className="survey-list-header-buttons" id="survey-list-search" onClick={startSearchText}>Search</button>
+                {/*<button className="survey-list-header-buttons" id="survey-list-search" onClick={startSearchText}>Search</button>*/}
                 <button className="survey-list-header-buttons" id="survey-list-sort" onClick={sortSurvey}>Sort</button>
                 <button className="survey-list-header-buttons" id="survey-list-create" onClick={createSurvey}>Create</button>
-
             </div>
             <div className="info-surveyList">
                 <div className="info-bar">
@@ -101,7 +82,7 @@ function SurveyList() {
                     <ul>
                         {surveyList.map((item, index) => {
                             return <li key={index}>
-                                <SurveyListItem listItem={item} />
+                                <SurveyListItem listItem={item} searchText={searchText} />
                             </li>
                         })}
                     </ul>

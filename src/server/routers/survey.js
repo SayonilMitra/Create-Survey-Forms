@@ -28,7 +28,6 @@ surveyRouter.post('/editSurvey', cors(), (req, res) => {
         surveyItem.startDate = editedSurvey.startDate
         surveyItem.endDate = editedSurvey.endDate
         surveyItem.otherCriteria = editedSurvey.otherCriteria
-        surveyItem.image = editedSurvey.image
         await surveyItem.save()
         res.end()
     }

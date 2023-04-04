@@ -3,14 +3,13 @@ import './CreateSurvey.css'
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'
 import axios from "axios";
-import SideBar from "../dashboard/SideBar";
 import backendLink from "../../server/backendLink";
 
 const CreateSurvey = () => {
     const navigate = useNavigate()
     // ================================= Check if user is logged in =================================
     useEffect(() => {
-        let loginStatus = localStorage.getItem("isLoggedIn")
+        let loginStatus = localStorage.getItem("userId")
         if (loginStatus === null) {
             // user not logged in, redirect to login page
             navigate('/login')
@@ -20,7 +19,7 @@ const CreateSurvey = () => {
 
     function logout() {
         navigate('/login')
-        localStorage.removeItem("isLoggedIn")
+        localStorage.removeItem("userId")
     }
 
     // ======================= Taking user input =======================
@@ -32,7 +31,6 @@ const CreateSurvey = () => {
         startDate: "",
         endDate: "",
         otherCriteria: "",
-        image: "",
         userId: userId
     })
     function ChangeSurveyName(e) {
@@ -63,8 +61,7 @@ const CreateSurvey = () => {
     // ======================= Send survey to database =======================
     function addSurvey() {
         if (newSurvey.surveyName === '' || newSurvey.description === '' || newSurvey.type === ''
-            || newSurvey.startDate === '' || newSurvey.endDate === '' || newSurvey.otherCriteria === ''
-            || newSurvey.image === '') {
+            || newSurvey.startDate === '' || newSurvey.endDate === '' || newSurvey.otherCriteria === '') {
             alert('All fields are mandatory')
         } else {
             axios.post(`${backendLink}/newSurvey`, newSurvey)
@@ -75,27 +72,14 @@ const CreateSurvey = () => {
 
     }
 
-    // ======================= Change image to string =======================
-    function convertImage(event) {
-        let file = event.target.files[0]
-        let reader = new FileReader()
-        reader.onloadend = function () {
-            setNewSurvey({ ...newSurvey, image: reader.result })
-        }
-        reader.readAsDataURL(file)
-    }
-
     // ======================= Rendered Output =======================
     return (
         <div>
             {/* ================ Nav Bar at the top ================ */}
             <nav className='create-survey-navbar'>
-                <div className='logo'>LOGO</div>
+                <div className='logo'>DashBoard</div>
                 <div className="log-out" onClick={logout}>Log Out</div>
             </nav>
-
-            {/* ================ Side bar ================ */}
-            <SideBar />
 
             {/* ================ Header ================ */}
             <header className="createhead">
@@ -141,14 +125,6 @@ const CreateSurvey = () => {
                     <div>
                         <h2>Other Criteria</h2>
                         <input id="critin" type="text" placeholder="" onChange={(e) => ChangeOtherCriteria(e)} />
-                    </div>
-                    <div>
-                        <h2>Upload Image</h2>
-                        <label id="uploadlabel" htmlFor="upload" onChange={(e) => convertImage(e)}>
-                            Drag and drop to Upload <br />
-                            <input type="file" id="upload" />
-                        </label>
-                        {newSurvey.image !== '' ? <img src={newSurvey.image} className='upload-image' /> : <></>}
                     </div>
                 </div>
             </main>

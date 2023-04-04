@@ -7,12 +7,12 @@ function Navbar() {
   const navigate = useNavigate()
   function logOut() {
     navigate('/login')
-    localStorage.removeItem("isLoggedIn")
+    localStorage.removeItem("userId")
   }
 
   return (
     <nav className="create-question-navbar">
-      <div>LOGO</div>
+      <div>DashBoard</div>
       <div className="log-out" onClick={logOut}>Log Out</div>
     </nav>
   );
